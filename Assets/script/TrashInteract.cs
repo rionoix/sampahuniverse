@@ -7,11 +7,12 @@ public class TrashInteract : Interactable
     public Sprite cleanSprite;    // Sprite setelah dibersihkan
 
     private SpriteRenderer spriteRenderer;
-    private bool isClean = false;
+    public bool IsClean { get; private set; } = false; // public read-only
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        IsClean = false;
 
         if (spriteRenderer != null && dirtySprite != null)
             spriteRenderer.sprite = dirtySprite;
@@ -19,7 +20,7 @@ public class TrashInteract : Interactable
 
     public override void Interact()
     {
-        if (!isClean)
+        if (!IsClean)
         {
             UIManager.Instance.ShowInteraction(this);
         }
@@ -27,19 +28,21 @@ public class TrashInteract : Interactable
 
     public void CleanTrash()
     {
-        if (isClean) return;
+        if (IsClean) return; // jangan hitung dua kali
 
-        isClean = true;
+        IsClean = true;
 
         if (spriteRenderer != null && cleanSprite != null)
             spriteRenderer.sprite = cleanSprite;
 
-        UIManager.Instance.ShowNotification("Sampah dibersihkan!");
+        // Beritahu UIManager bahwa satu sampah sudah dibersihkan
+        if (UIManager.Instance != null)
+            UIManager.Instance.AddCleaned(1);
     }
 
     public void ResetTrash()
     {
-        isClean = false;
+        IsClean = false;
 
         if (spriteRenderer != null && dirtySprite != null)
             spriteRenderer.sprite = dirtySprite;

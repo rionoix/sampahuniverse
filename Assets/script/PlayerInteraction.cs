@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionRange = 1f;       // jarak interaksi
+    public float interactionRange = 2f;       // jarak interaksi
     public LayerMask interactableLayer;       // filter layer Interactable
 
     void Update()
