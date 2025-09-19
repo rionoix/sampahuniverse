@@ -13,21 +13,23 @@ public class UIManager : MonoBehaviour
     public Button cleanButton;
     public TMP_Text notificationText;
 
-    // New fields untuk skor
     [Header("Score UI")]
     public TMP_Text currentScoreText;     // contoh: "4/10"
     public TMP_Text totalCleanedText;     // contoh: "Total dibersihkan: 42"
 
     // Counters
     private int currentCleanCount = 0;    // jumlah yang dibersihkan di ronde sekarang
-    private int totalCleanedCount = 0;    // total kumulatif (tidak reset saat ResetGame dipencet)
-    private int totalTrashThisRound = 10; // default, akan di-overwrite oleh spawner jika ada
+    private int totalCleanedCount = 0;    // total kumulatif (disimpan kalau pakai PlayerPrefs)
+    private int totalTrashThisRound = 10; // jumlah sampah di ronde ini
 
     [Header("Persistence")]
-    public bool usePlayerPrefs = true;    // jika true, totalCleanedCount disimpan di PlayerPrefs
+    public bool usePlayerPrefs = true;    
     public string prefsKey = "TotalCleanedAllTime";
 
     private TrashInteract currentTrash;
+
+    [Header("References")]
+    public TrashSpawner trashSpawner;     // 🎯 reference ke spawner
 
     void Awake()
     {
@@ -46,38 +48,31 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        // load total kumulatif dari PlayerPrefs kalau diaktifkan
         if (usePlayerPrefs)
             totalCleanedCount = PlayerPrefs.GetInt(prefsKey, 0);
 
-        // Ambil informasi jumlah trash dari TrashSpawner bila ada
-        var spawner = FindObjectOfType<TrashSpawner>();
-        if (spawner != null)
-            totalTrashThisRound = spawner.trashCount;
+        if (trashSpawner == null)
+            trashSpawner = FindObjectOfType<TrashSpawner>();
+
+        if (trashSpawner != null)
+            totalTrashThisRound = trashSpawner.trashCount;
 
         UpdateScoreUI();
-
-        // Refresh counts *setelah* spawn (biar aman jika spawner spawn di Start)
         StartCoroutine(RefreshCountsNextFrame());
     }
 
     IEnumerator RefreshCountsNextFrame()
     {
-        yield return null; // tunggu 1 frame agar TrashSpawner.Start sudah run
+        yield return null; // tunggu 1 frame biar spawner selesai spawn
         RefreshCountsFromScene();
         UpdateScoreUI();
     }
 
-    // Hitung ulang berdasarkan objek di scene (berguna kalau spawn dinamis)
+    // Hitung ulang hanya jumlah trash, TIDAK reset progress bersih
     void RefreshCountsFromScene()
     {
         var allTrash = FindObjectsOfType<TrashInteract>();
         totalTrashThisRound = allTrash.Length;
-        currentCleanCount = 0;
-        foreach (var t in allTrash)
-        {
-            if (t.IsClean) currentCleanCount++;
-        }
     }
 
     // Dipanggil dari TrashInteract ketika sampah dibersihkan
@@ -86,7 +81,6 @@ public class UIManager : MonoBehaviour
         currentCleanCount += amount;
         totalCleanedCount += amount;
 
-        // simpan persistent jika diperlukan
         if (usePlayerPrefs)
             PlayerPrefs.SetInt(prefsKey, totalCleanedCount);
 
@@ -104,14 +98,12 @@ public class UIManager : MonoBehaviour
             totalCleanedText.text = "Total dibersihkan: " + totalCleanedCount;
     }
 
-    // Interaction panel (tetap)
+    // Panel interaksi
     public void ShowInteraction(TrashInteract trash)
     {
         currentTrash = trash;
-
         if (interactionPanel != null)
             interactionPanel.SetActive(true);
-
         if (titleText != null)
             titleText.text = "N*o Sampah";
     }
@@ -128,7 +120,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Notification (tetap)
+    // Notifikasi singkat
     public void ShowNotification(string message)
     {
         if (notificationText == null) return;
@@ -146,35 +138,43 @@ public class UIManager : MonoBehaviour
             notificationText.gameObject.SetActive(false);
     }
 
-    // 🔄 Fungsi Reset: kembalikan semua trash ke kotor
+    // 🔄 Fungsi Reset: hapus + spawn ulang trash
     public void ResetGame()
     {
-        TrashInteract[] allTrash = FindObjectsOfType<TrashInteract>();
-        foreach (var trash in allTrash)
+        if (trashSpawner != null)
         {
-            trash.ResetTrash();
+            trashSpawner.ResetTrash(); // hapus & spawn ulang
         }
 
-        // Karena semua dikembalikan, reset hitungan ronde sekarang
+        // Reset hitungan ronde
         currentCleanCount = 0;
-        UpdateScoreUI();
 
-        ShowNotification("Semua sampah dikembalikan!");
+        // Tunggu 1 frame biar sampah lama benar-benar hilang sebelum hitung ulang
+        StartCoroutine(RefreshCountsAfterReset());
+
+        ShowNotification("Sampah diacak ulang!");
     }
 
-    // ❌ Fungsi Exit Game (tetap)
+    private IEnumerator RefreshCountsAfterReset()
+    {
+        yield return null;
+        RefreshCountsFromScene();
+        UpdateScoreUI();
+    }
+
+    // ❌ Fungsi Exit Game
     public void ExitGame()
     {
         Debug.Log("Keluar game...");
 
     #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // berhenti play mode
+        UnityEditor.EditorApplication.isPlaying = false; 
     #else
-        Application.Quit(); // keluar aplikasi
+        Application.Quit(); 
     #endif
     }
 
-    // Optional: fungsi untuk reset total kumulatif (misal untuk debug)
+    // 🔄 Reset total kumulatif (opsional, misal untuk debug)
     public void ResetTotalCleanedPersistent()
     {
         totalCleanedCount = 0;

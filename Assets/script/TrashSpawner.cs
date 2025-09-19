@@ -12,6 +12,7 @@ public class TrashSpawner : MonoBehaviour
     public float minDistance = 1.5f; // jarak minimum antar sampah
 
     private List<Vector2> usedPositions = new List<Vector2>();
+    private List<GameObject> spawnedTrash = new List<GameObject>();
 
     void Start()
     {
@@ -30,9 +31,10 @@ public class TrashSpawner : MonoBehaviour
             // coba beberapa kali sampai dapat posisi yang valid
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
+                // 📌 Spawn selalu di sekitar (0,0), bukan di sekitar player
                 Vector2 randomPos = new Vector2(
-                    transform.position.x + Random.Range(-spawnRange, spawnRange),
-                    transform.position.y + Random.Range(-spawnRange, spawnRange)
+                    Random.Range(-spawnRange, spawnRange),
+                    Random.Range(-spawnRange, spawnRange)
                 );
 
                 if (IsFarEnough(randomPos))
@@ -45,7 +47,9 @@ public class TrashSpawner : MonoBehaviour
 
             if (validPos)
             {
-                Instantiate(trashPrefab, spawnPos, Quaternion.identity);
+                GameObject newTrash = Instantiate(trashPrefab, spawnPos, Quaternion.identity);
+                newTrash.tag = "Trash"; // penting supaya bisa dihapus UIManager
+                spawnedTrash.Add(newTrash);
                 usedPositions.Add(spawnPos);
             }
             else
@@ -63,5 +67,22 @@ public class TrashSpawner : MonoBehaviour
                 return false; // terlalu dekat
         }
         return true;
+    }
+
+    // === Fungsi Reset ===
+    public void ResetTrash()
+    {
+        // Hapus semua sampah lama
+        foreach (GameObject trash in spawnedTrash)
+        {
+            if (trash != null)
+                Destroy(trash);
+        }
+
+        spawnedTrash.Clear();
+        usedPositions.Clear();
+
+        // Spawn ulang dengan posisi acak baru di sekitar (0,0)
+        SpawnTrash();
     }
 }
