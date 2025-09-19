@@ -7,12 +7,12 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("UI References")]
-    public GameObject interactionPanel;   // Panel utama
-    public TMP_Text titleText;            // Judul interaksi
-    public Button cleanButton;            // Tombol "Bersihkan"
-    public TMP_Text notificationText;     // Notifikasi singkat
+    public GameObject interactionPanel;
+    public TMP_Text titleText;
+    public Button cleanButton;
+    public TMP_Text notificationText;
 
-    private TrashInteract currentTrash;   // sampah yang sedang aktif
+    private TrashInteract currentTrash;
 
     void Awake()
     {
@@ -67,5 +67,29 @@ public class UIManager : MonoBehaviour
     {
         if (notificationText != null)
             notificationText.gameObject.SetActive(false);
+    }
+
+    // 🔄 Fungsi Reset
+    public void ResetGame()
+    {
+        TrashInteract[] allTrash = FindObjectsOfType<TrashInteract>();
+        foreach (var trash in allTrash)
+        {
+            trash.ResetTrash();
+        }
+
+        ShowNotification("Semua sampah dikembalikan!");
+    }
+
+    // ❌ Fungsi Exit Game
+    public void ExitGame()
+    {
+        Debug.Log("Keluar game...");
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // berhenti play mode
+#else
+        Application.Quit(); // keluar aplikasi
+#endif
     }
 }

@@ -21,7 +21,6 @@ public class TrashInteract : Interactable
     {
         if (!isClean)
         {
-            // Panggil UIManager dan beritahu "ini sampah yang dipilih"
             UIManager.Instance.ShowInteraction(this);
         }
     }
@@ -32,11 +31,17 @@ public class TrashInteract : Interactable
 
         isClean = true;
 
-        // Ganti sprite
         if (spriteRenderer != null && cleanSprite != null)
             spriteRenderer.sprite = cleanSprite;
 
-        // Beritahu UI Manager tampilkan notifikasi
         UIManager.Instance.ShowNotification("Sampah dibersihkan!");
+    }
+
+    public void ResetTrash()
+    {
+        isClean = false;
+
+        if (spriteRenderer != null && dirtySprite != null)
+            spriteRenderer.sprite = dirtySprite;
     }
 }
