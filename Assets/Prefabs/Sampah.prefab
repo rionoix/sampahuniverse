@@ -86,7 +86,7 @@ SpriteRenderer:
   m_Size: {x: 0.76, y: 0.87}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &5838126017074662832
@@ -123,7 +123,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.047702372, y: -0.053002708}
+  m_Offset: {x: -0.013235524, y: -0.15940031}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -133,7 +133,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.41018236, y: 0.55198395}
+  m_Size: {x: 0.4911044, y: 0.4470852}
   m_EdgeRadius: 0
 --- !u!114 &1725165829069019573
 MonoBehaviour:
@@ -147,9 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a7f873b3d9252444bb441a8f8ebd44d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPanel: {fileID: 0}
-  titleText: {fileID: 0}
-  cleanButton: {fileID: 0}
-  notificationText: {fileID: 0}
-  dirtySprite: {fileID: -8656649234539825271, guid: 7b4955163b41e1f4db44d983efda0c30, type: 3}
-  cleanSprite: {fileID: 6638392178253452840, guid: c4f1546da8d180448b3cc2d7870c315a, type: 3}
+  dirtySprite: {fileID: 5319354847235829496, guid: d65ae9fb8acbec74abd5ece75a850888, type: 3}
+  cleanSprite: {fileID: -542687285139342791, guid: 7ecfcdd5f6490f548ad7e4b67713d0de, type: 3}
+  floatingTextPrefab: {fileID: 1623611940753617836, guid: 579bde3e1a9d2b547877e1fb4782ba8d, type: 3}
