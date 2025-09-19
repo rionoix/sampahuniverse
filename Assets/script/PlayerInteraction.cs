@@ -16,9 +16,8 @@ public class PlayerInteraction : MonoBehaviour
         // Kalau di Android, nanti pakai tombol UI → panggil TryInteract()
     }
 
-    private void TryInteract()
+    public void TryInteract()
     {
-        // Cari objek di sekitar player
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactionRange, interactableLayer);
         if (hit != null)
         {
@@ -26,7 +25,12 @@ public class PlayerInteraction : MonoBehaviour
             if (interactable != null)
             {
                 interactable.Interact();
+                Debug.Log("Interaksi berhasil dengan: " + hit.name);
             }
+        }
+        else
+        {
+            Debug.Log("Tidak ada objek interaksi di dekat player");
         }
     }
 
