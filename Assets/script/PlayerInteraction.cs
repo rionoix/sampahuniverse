@@ -1,21 +1,33 @@
 using UnityEngine;
+using UnityEngine.InputSystem; // Input System baru
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [Header("Interaction Settings")]
     public float interactionRange = 2f;       // jarak interaksi
     public LayerMask interactableLayer;       // filter layer Interactable
 
-    void Update()
+    // ==== DIPANGGIL OLEH PlayerInput (PC/Web/Console) ====
+#if UNITY_STANDALONE || UNITY_WEBGL
+    public void OnInteract(InputValue value)
     {
-        // Tekan E di PC
-        if (Input.GetKeyDown(KeyCode.E)) 
+        if (value.isPressed)
         {
             TryInteract();
         }
-
-        // Kalau di Android, nanti pakai tombol UI → panggil TryInteract()
     }
+#endif
 
+    // ==== DIPAKAI UNTUK ANDROID/IOS ====
+#if UNITY_ANDROID || UNITY_IOS
+    // Fungsi ini bisa dipanggil dari tombol UI (Button OnClick di Canvas)
+    public void OnInteractButton()
+    {
+        TryInteract();
+    }
+#endif
+
+    // ==== LOGIKA INTERAKSI ====
     public void TryInteract()
     {
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactionRange, interactableLayer);
