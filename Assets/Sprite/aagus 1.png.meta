@@ -1,16 +1,22 @@
 fileFormatVersion: 2
-guid: c1c3327df9e85cb44a458a11b2f31c1d
+guid: a967ad1a1e2e4a9419c10205c24f9f80
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2655967299346065727
-    second: PP_0
+      213: 5469085502487917549
+    second: aagus_0
   - first:
-      213: -6857828259110935382
-    second: PP_1
+      213: -3236047152820497804
+    second: aagus_1
   - first:
-      213: -1006901341370217483
-    second: PP_2
+      213: -5601518239974977635
+    second: aagus_2
+  - first:
+      213: 7008552253077602272
+    second: aagus_3
+  - first:
+      213: 3979618139938201751
+    second: aagus_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +58,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -132,67 +138,111 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PP_0
+      name: aagus_0
       rect:
         serializedVersion: 2
-        x: 60
-        y: 132
-        width: 106
-        height: 114
+        x: 8
+        y: 199
+        width: 57
+        height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1c69c6b20db142bd0800000000000000
-      internalID: -2655967299346065727
+      spriteID: de3f70eb94816eb40800000000000000
+      internalID: 5469085502487917549
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PP_1
+      name: aagus_1
       rect:
         serializedVersion: 2
-        x: 60
-        y: 87
-        width: 92
-        height: 86
+        x: 103
+        y: 201
+        width: 57
+        height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa4ae0d588914d0a0800000000000000
-      internalID: -6857828259110935382
+      spriteID: 47258b382404713d0800000000000000
+      internalID: -3236047152820497804
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PP_2
+      name: aagus_2
       rect:
         serializedVersion: 2
-        x: 99
-        y: 16
-        width: 290
-        height: 479
+        x: 7
+        y: 55
+        width: 57
+        height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5fb83c79094c602f0800000000000000
-      internalID: -1006901341370217483
+      spriteID: d9f8b6fb6d86342b0800000000000000
+      internalID: -5601518239974977635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aagus_3
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 57
+        width: 57
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ef347a2421634160800000000000000
+      internalID: 7008552253077602272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aagus_4
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 58
+        width: 57
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 790a7b40d917a3730800000000000000
+      internalID: 3979618139938201751
       vertices: []
       indices: 
       edges: []
@@ -201,7 +251,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: f5c98462b7868fa41a15a30ca274919a
     internalID: 0
     vertices: []
     indices: 
@@ -211,9 +261,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PP_0: -2655967299346065727
-      PP_1: -6857828259110935382
-      PP_2: -1006901341370217483
+      aagus_0: 5469085502487917549
+      aagus_1: -3236047152820497804
+      aagus_2: -5601518239974977635
+      aagus_3: 7008552253077602272
+      aagus_4: 3979618139938201751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

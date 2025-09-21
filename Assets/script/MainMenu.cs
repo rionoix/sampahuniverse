@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
-    {
-        SceneManager.LoadScene("ruang kelas"); 
-        // pastikan nama persis sama dengan scene yang kamu buat
-    }
+{
+    Debug.Log("Tombol Start ditekan!");
+    SceneManager.LoadScene("ruang kelas");
+}
+
 
     public void QuitGame()
     {

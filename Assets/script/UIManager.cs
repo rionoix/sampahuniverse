@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -165,13 +166,9 @@ public class UIManager : MonoBehaviour
     // ❌ Fungsi Exit Game
     public void ExitGame()
     {
-        Debug.Log("Keluar game...");
+        Debug.Log("Kembali ke menu...");
 
-    #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; 
-    #else
-        Application.Quit(); 
-    #endif
+        SceneManager.LoadScene("menu");
     }
 
     // 🔄 Reset total kumulatif (opsional, misal untuk debug)
