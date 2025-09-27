@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      kelas kosong_0: 3465941073155320799
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

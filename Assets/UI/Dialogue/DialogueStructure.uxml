@@ -1,0 +1,14 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Dialogue/DialogueStructure.uss?fileID=7433441132597879392&amp;guid=a88f23e99cf125e439631bf911074791&amp;type=3#DialogueStructure" />
+    <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: 47%; left: 15%; width: 70%; height: 40%; background-color: rgba(103, 103, 103, 0.77);">
+        <engine:ScrollView name="texts" style="position: absolute; top: 7%; left: 2%; width: 96%; height: 35%; flex-wrap: wrap;">
+            <engine:Label text="We can not chat right now!" name="dialogue-text" class="wrap" style="font-size: 10px; flex-wrap: wrap;" />
+        </engine:ScrollView>
+        <engine:ScrollView name="option-tab" style="position: absolute; top: 45%; left: 2%; width: 96%; height: 35%; flex-wrap: wrap;" />
+        <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: -10%; left: 0; width: 20%; height: 10%; background-color: rgba(103, 103, 103, 0.77);">
+            <engine:Label text="Unknown" name="subject" style="align-items: center; justify-content: flex-end; align-self: stretch; align-content: center; flex-direction: row-reverse; font-size: 10px; position: absolute;" />
+        </engine:VisualElement>
+        <engine:Button text="Keluar" name="exit-button" style="top: 83%; left: 63%; width: 33%; height: 11%;" />
+        <engine:Button text="Lewati" name="skip-button" style="top: 68%; left: 3%; width: 33%; height: 11%;" />
+    </engine:VisualElement>
+</engine:UXML>

@@ -47,4 +47,7 @@ public class PlayerMovement : MonoBehaviour
         // Debug untuk cek input
         // Debug.Log("Move: " + moveInput + " | Speed: " + moveInput.sqrMagnitude);
     }
+
+
+
 }
