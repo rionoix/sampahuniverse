@@ -130,7 +130,30 @@ public class DialogueUIController : MonoBehaviour
             return;
         }
 
+        List<Dialogue> current = playingDialogue.ReturnDialogue();
 
+        // Show all the values we are checking
+
+
+        if (current != null && dialogueIndex >= current.Count - 1 && otherOptions.Count <= 0)
+        {
+            //Debug.Log("[DEBUG] Reached last dialogue line, no options available.");
+
+            if (dialogueContent.text == targetLine)
+            {
+                ShowOptions(playingDialogue.ReturnDialogueOptions());
+                // Debug.Log("[DEBUG] Text fully revealed -> hiding skip button.");
+                skipButton.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                // Debug.Log("[DEBUG] Text not fully revealed -> keeping skip button visible.");
+            }
+        }
+        else
+        {
+            // Debug.Log("[DEBUG] Not last line OR there are options -> skip button stays visible.");
+        }
     }
     /// <summary>
     /// Menampilkan baris dialog berikutnya, baik secara langsung atau dengan efek mengetik.
@@ -142,7 +165,8 @@ public class DialogueUIController : MonoBehaviour
         List<Dialogue> current = playingDialogue.ReturnDialogue();
         if (current != null && dialogueIndex >= current.Count - 1 && otherOptions.Count <= 0)
         {
-            ShowOptions(playingDialogue.ReturnDialogueOptions());
+
+
         }
         Debug.Log("dialogue box meow = " + dialogueContent.text + "dialogue meow meow: " + current[dialogueIndex].message);
         Debug.Log("length = " + current.Count + "index = " + dialogueIndex + " text = " + current[dialogueIndex].message);
@@ -267,6 +291,7 @@ public class DialogueUIController : MonoBehaviour
             return;
         }
         RemoveOptions();
+        skipButton.style.display = DisplayStyle.Flex;
         dialogueIndex = 0;
         GetNextLine(false);
 
@@ -278,6 +303,7 @@ public class DialogueUIController : MonoBehaviour
 
     public void EmptyDialogue(string message, string closingText)
     {
+        skipButton.style.display = DisplayStyle.Flex;
         Dialogue cantTalk = new Dialogue(message, DialogueSubject.Player);
         root.style.display = DisplayStyle.Flex;
         ShowDialogue(cantTalk);
