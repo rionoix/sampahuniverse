@@ -10,12 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1702b0c9d99d63341a0a25a014861da5, type: 3}
-  m_Name: DialogueItem
+  m_Name: AniDialogue
   m_EditorClassIdentifier: 
   startingDialogue:
     dialogueId: hello
     dialogue:
     - message: HELLO meow
+      subject: 1
+    dialogueOptions:
+    - optionText: 'Hello stuff meow '
+      targetNode: test
+  dialogueSequences:
+  - dialogueId: test
+    dialogue:
+    - message: This is just a test
       subject: 0
-    dialogueOptions: []
-  dialogueSequences: []
+    - message: To see if this programming shit is working
+      subject: 0
+    - message: It's kind of stupid but you do you
+      subject: 1
+    - message: whatever
+      subject: 1
+    dialogueOptions:
+    - optionText: meow meow meow
+      targetNode: meow

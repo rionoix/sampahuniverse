@@ -1,14 +1,15 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Dialogue/DialogueStructure.uss?fileID=7433441132597879392&amp;guid=a88f23e99cf125e439631bf911074791&amp;type=3#DialogueStructure" />
-    <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: 47%; left: 15%; width: 70%; height: 40%; background-color: rgba(103, 103, 103, 0.77);">
+    <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: 36%; left: 41%; width: 59%; height: 25%; background-color: rgba(103, 103, 103, 1);">
         <engine:ScrollView name="texts" style="position: absolute; top: 7%; left: 2%; width: 96%; height: 35%; flex-wrap: wrap;">
-            <engine:Label text="We can not chat right now!" name="dialogue-text" class="wrap" style="font-size: 20px; flex-wrap: wrap;" />
+            <engine:Label text="We can not chat right now!" name="dialogue-text" class="wrap" style="font-size: 17px; flex-wrap: wrap; -unity-font-style: bold;" />
         </engine:ScrollView>
         <engine:ScrollView name="option-tab" style="position: absolute; top: 45%; left: 2%; width: 96%; height: 35%; flex-wrap: wrap;" />
-        <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: -10%; left: 0; width: 20%; height: 10%; background-color: rgba(103, 103, 103, 0.77); font-size: 20px;">
-            <engine:Label text="Unknown" name="subject" style="align-items: center; justify-content: flex-end; align-self: stretch; align-content: center; flex-direction: row-reverse; font-size: 20px; position: absolute;" />
+        <engine:VisualElement style="flex-grow: 1; margin-top: 0; position: absolute; top: -10%; left: 0; width: 20%; height: 10%; background-color: rgba(103, 103, 103, 1); font-size: 20px;">
+            <engine:Label text="Unknown" name="subject" style="align-items: center; justify-content: flex-end; align-self: stretch; align-content: center; flex-direction: row-reverse; font-size: 20px; position: absolute; -unity-font-style: bold;" />
         </engine:VisualElement>
         <engine:Button text="Keluar" name="exit-button" style="top: 83%; left: 63%; width: 33%; height: 11%; font-size: 20px;" />
-        <engine:Button text="Lewati" name="skip-button" style="top: 68%; left: 3%; width: 33%; height: 11%; font-size: 20px;" />
+        <engine:Button text="Lewati" name="skip-button" style="top: 70%; left: 3%; width: 33%; height: 11%; font-size: 20px;" />
     </engine:VisualElement>
+    <engine:Image name="potrait" style="width: 40%; height: 60%; unity-background-scale-mode: scale-to-fit; background-color: rgba(255, 0, 0, 0); top: 16%; left: 0;" />
 </engine:UXML>

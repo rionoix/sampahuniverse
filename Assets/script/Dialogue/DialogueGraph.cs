@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.Media;
 using UnityEngine;
+using UnityEngine.UIElements;
 public enum DialogueSubject
 {
     Player,
@@ -21,15 +22,39 @@ public class Dialogue
         this.subject = subject;
     }
 }
+/// <summary>
+/// Merepresentasikan suatu dokumen dengan sebuah simpul yang memiliki banyak sisi  
+/// </summary>
 [Serializable]
 public class DialogueNode
 {
+    /// <summary>
+    /// Identifier unik dari sebuah dialog.
+    /// </summary>
     [SerializeField]
-    public String dialogueId;
+    public string dialogueId;
+
+    /// <summary>
+    /// Baris dialog yang disimpan oleh simpul dialog.
+    /// </summary>
     [SerializeField]
     public List<Dialogue> dialogue;
+
+    /// <summary>
+    /// Opsi-opsi yang terdapat di dialog dengan message menyatakan pesan yang dinyatakan dan subject mengarah ke siapa yang berbicara.
+    /// </summary>
     [SerializeField]
     public List<DialogueDirection> dialogueOptions;
+
+    /// <summary>
+    /// Mencoba menambahkan arah baru ke node dialog lainnya.
+    /// Hanya akan ditambahkan jika node target belum ada dalam daftar opsi.
+    /// </summary>
+    /// <param name="nextDialogue">Tautan arah menuju node dialog lainnya.</param>
+    /// <returns>
+    /// True jika arah berhasil ditambahkan; false jika node target sudah ada dalam opsi.
+    /// </returns>
+
     public bool AppendEdge(DialogueDirection nextDialogue)
     {
         int index = dialogueOptions.FindIndex(a => a.targetNode == nextDialogue.targetNode);
@@ -44,23 +69,41 @@ public class DialogueNode
         }
     }
 }
+
+/// <summary>
+/// Mewakili arah pilihan dalam sistem dialog, menghubungkan node saat ini ke node target berikutnya.
+/// </summary>
 [Serializable]
 public class DialogueDirection
 {
-    public String optionText;
-    public String targetNode;
-    public DialogueDirection(String targetNode, String optionText)
+    /// <summary>
+    /// Teks pilihan yang ditampilkan kepada pemain.
+    /// </summary>
+    public string optionText;
+
+    /// <summary>
+    /// ID node target yang akan dituju jika pilihan ini dipilih.
+    /// </summary>
+    public string targetNode;
+
+    /// <summary>
+    /// Membuat instance baru dari arah dialog dengan node tujuan dan teks pilihan.
+    /// </summary>
+    /// <param name="targetNode">ID node tujuan.</param>
+    /// <param name="optionText">Teks pilihan yang ditampilkan.</param>
+    public DialogueDirection(string targetNode, string optionText)
     {
         this.optionText = optionText;
         this.targetNode = targetNode;
     }
-
 }
+
 public class DialogueGraph : MonoBehaviour
 {
     Dictionary<String, DialogueNode> dialogues;
     List<DialogueNode> dialogueHistory;
     public DialogueItem dialogueFrame;
+    public Sprite potrait;
     // bool canTrigger = false;
     public void Awake()
     {

@@ -11,7 +11,7 @@ public class PlayerDialogue : MonoBehaviour
     private GameEntity entity;
     float triggerRadius = 10.0f;
     private DialogueUIController dialogueUI;
-
+    public Sprite potrait;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,8 +21,6 @@ public class PlayerDialogue : MonoBehaviour
         entity = gameObject.GetComponent<GameEntity>();
         dialogueUI = GameObject.Find("Dialogue").GetComponent<DialogueUIController>();
 
-
-        dialogueUI.Activate();
 
     }
     private HashSet<GameObject> alreadyEntered = new();
@@ -75,7 +73,7 @@ public class PlayerDialogue : MonoBehaviour
         DialogueGraph graph = gameObject.GetComponent<DialogueGraph>();
         if (graph != null)
         {
-            dialogueUI.Trigger(graph, gameObject.name);
+            dialogueUI.Trigger(graph, gameObject.name, potrait, graph.potrait);
         }
     }
     void OnProximityExit(GameObject gameObject)

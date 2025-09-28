@@ -7,13 +7,11 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-
     [Header("UI References")]
     public GameObject interactionPanel;
     public TMP_Text titleText;
     public Button cleanButton;
     public TMP_Text notificationText;
-
     [Header("Score UI")]
     public TMP_Text currentScoreText;     // contoh: "4/10"
     public TMP_Text totalCleanedText;     // contoh: "Total dibersihkan: 42"
@@ -24,7 +22,7 @@ public class UIManager : MonoBehaviour
     private int totalTrashThisRound = 10; // jumlah sampah di ronde ini
 
     [Header("Persistence")]
-    public bool usePlayerPrefs = true;    
+    public bool usePlayerPrefs = true;
     public string prefsKey = "TotalCleanedAllTime";
 
     private TrashInteract currentTrash;

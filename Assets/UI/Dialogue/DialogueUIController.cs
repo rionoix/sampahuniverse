@@ -9,19 +9,54 @@ using NUnit.Framework.Constraints;
 public class DialogueUIController : MonoBehaviour
 {
     // I'm going to fucking kill myself from the amount of shared mutables.
+    // Referensi ke graph dialog yang sedang dimainkan.
     DialogueGraph playingDialogue;
+
+    // Root dari UI Toolkit (VisualElement utama).
     VisualElement root;
+
+    // Label untuk menampilkan isi dialog.
     Label dialogueContent;
+
+    // Label untuk menampilkan nama pembicara.
     Label subjectSpeaking;
+
+    // Tombol pilihan utama (jika ada).
     Button option;
+    // 
+    Image speakingPotrait;
+    // Potret player
+
+    Sprite playerPotrait;
+    // Potret yang lain
+    Sprite otherPotrait;
+    // Daftar tombol pilihan lainnya.
     List<Button> otherOptions = new List<Button>();
+
+    // Kontainer tempat tombol-tombol pilihan ditambahkan.
     VisualElement optionContainer;
+
+    // Baris dialog yang sedang ditargetkan untuk ditampilkan.
     string targetLine;
+
+    // Tombol keluar dari dialog.
     Button exitButton;
-    String otherName;
+
+    // Nama karakter lain yang sedang berbicara.
+    string otherName;
+
+    // Kecepatan mengetik huruf per huruf dalam efek dialog.
     float typingSpeed = 0.05f;
+
+    // Indeks dialog saat ini dalam urutan.
     int dialogueIndex = 0;
+
+    // Tombol untuk skip atau lanjut dialog.
     Button skipButton;
+    /// <summary>
+    /// Menginisialisasi dan menghubungkan elemen UI dari UIDocument. Pastikan terdapat HANYA SATU GameObject bernama yang berisikan "Dialogue" dan berisi UIDocument beserta DialogueUIController 
+    /// </summary>
+
     public void Activate()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -41,6 +76,7 @@ public class DialogueUIController : MonoBehaviour
         exitButton = root.Q<Button>("exit-button");
         skipButton = root.Q<Button>("skip-button");
         ScrollView optionTab = root.Q<ScrollView>("option-tab");
+        speakingPotrait = root.Q<Image>("potrait");
         optionContainer = optionTab.contentContainer;
         exitButton.clicked += End;
         skipButton.clicked += HandleDialogueClick;
@@ -50,20 +86,26 @@ public class DialogueUIController : MonoBehaviour
         Activate();
 
     }
+    /// <summary>
+    /// Menangani klik pada area dialog untuk melanjutkan atau menampilkan baris berikutnya.
+    /// </summary>
+
     void HandleDialogueClick()
     {
+        // I have no idea how any of this works please pretend it does.
+        Debug.Log("This is a test!");
         if (otherOptions.Count > 0)
         {
             if (dialogueContent.text != targetLine)
             {
+
                 StopAllCoroutines();
                 GetNextLine(true);
             }
             return;
         }
 
-        // Debug.Log("dialogue box meow = " + dialogueContent.text + "dialogue meow meow: " + current[dialogueIndex].message);
-        // Debug.Log("length = " + current.Count + "index = " + dialogueIndex + " text = " + current[dialogueIndex].message);
+
         if (dialogueContent.text == targetLine)
         {
             dialogueIndex++;
@@ -76,6 +118,11 @@ public class DialogueUIController : MonoBehaviour
             GetNextLine(true);
         }
     }
+
+    /// <summary>
+    /// Dipanggil setiap frame. Digunakan untuk validasi atau update runtime.
+    /// </summary>
+
     void Update()
     {
         if (playingDialogue == null)
@@ -85,6 +132,11 @@ public class DialogueUIController : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// Menampilkan baris dialog berikutnya, baik secara langsung atau dengan efek mengetik.
+    /// </summary>
+    /// <param name="skipped">Jika true, langsung tampilkan teks tanpa efek mengetik.</param>
+
     void GetNextLine(bool skipped)
     {
         List<Dialogue> current = playingDialogue.ReturnDialogue();
@@ -92,6 +144,8 @@ public class DialogueUIController : MonoBehaviour
         {
             ShowOptions(playingDialogue.ReturnDialogueOptions());
         }
+        Debug.Log("dialogue box meow = " + dialogueContent.text + "dialogue meow meow: " + current[dialogueIndex].message);
+        Debug.Log("length = " + current.Count + "index = " + dialogueIndex + " text = " + current[dialogueIndex].message);
         if (skipped)
         {
             dialogueContent.text = targetLine;
@@ -100,7 +154,6 @@ public class DialogueUIController : MonoBehaviour
         else
         {
             ShowDialogue(current[dialogueIndex]);
-
         }
         // dialogueContent.text = current[dialogueIndex].message;
 
@@ -108,6 +161,11 @@ public class DialogueUIController : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// Menampilkan satu baris dialog dengan efek mengetik.
+    /// </summary>
+    /// <param name="dialogue">Objek dialog yang akan ditampilkan.</param>
+
     void ShowDialogue(Dialogue dialogue)
     {
         // List<Dialogue> current = playingDialogue.ReturnDialogue();
@@ -116,19 +174,34 @@ public class DialogueUIController : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// Membuat tombol pilihan dialog dengan teks dan callback klik.
+    /// </summary>
+    /// <param name="innerText">Teks yang ditampilkan pada tombol.</param>
+    /// <param name="callback">Fungsi yang dipanggil saat tombol diklik.</param>
+
     void CreateOption(string innerText, EventCallback<ClickEvent> callback)
     {
         Button button = new Button();
         button.text = innerText;
         button.style.color = Color.gray;
-        button.style.fontSize = 25;
+        button.style.fontSize = 20;
+        button.style.maxHeight = Length.Percent(30);
+        button.style.height = Length.Percent(100);
         button.RegisterCallback<ClickEvent>(callback); // Register the callback here
         otherOptions.Add(button);
         optionContainer.Add(button);
     }
+
+    /// <summary>
+    /// Menampilkan semua pilihan arah dialog yang tersedia.
+    /// </summary>
+    /// <param name="directions">Daftar arah dialog dari node saat ini.</param>
+
     void ShowOptions(List<DialogueDirection> directions)
     {
         RemoveOptions();
+        // Jangan tampilkan jika arah dialog ke 0.
         if (directions == null)
         {
             return;
@@ -150,9 +223,23 @@ public class DialogueUIController : MonoBehaviour
 
         }
     }
+    /// <summary>
+    /// Coroutine untuk menampilkan teks dialog huruf per huruf.
+    /// </summary>
+    /// <param name="line">Objek dialog yang berisi pesan dan subjek.</param>
+
     private IEnumerator TypeLine(Dialogue line)
     {
-        subjectSpeaking.text = GetSubject(otherName, line.subject);
+        var (name, currentPotrait) = GetSubject(otherName, line.subject);
+        subjectSpeaking.text = name;
+        Debug.Log("Speaking potrait = " + speakingPotrait + " With current potrait = " + currentPotrait);
+        if (currentPotrait != null && speakingPotrait != null)
+        {
+            speakingPotrait.style.backgroundImage = new StyleBackground(currentPotrait);
+            speakingPotrait.style.backgroundSize = new BackgroundSize(BackgroundSizeType.Contain);
+            speakingPotrait.style.backgroundPositionX = new BackgroundPosition(BackgroundPositionKeyword.Center);
+            speakingPotrait.style.backgroundPositionY = new BackgroundPosition(BackgroundPositionKeyword.Center);
+        }
         targetLine = line.message;
         Debug.Log("Playing dialogue = " + line.message);
         dialogueContent.text = "";
@@ -165,6 +252,11 @@ public class DialogueUIController : MonoBehaviour
         // dialogueIndex++;
         // Debug.Log("current index = " + dialogueIndex);
     }
+    /// <summary>
+    /// Melanjutkan ke node dialog berikutnya berdasarkan ID target.
+    /// </summary>
+    /// <param name="nextId">ID node dialog tujuan.</param>
+
     void NextDialogue(string nextId)
     {
         Debug.Log(nextId);
@@ -179,6 +271,11 @@ public class DialogueUIController : MonoBehaviour
         GetNextLine(false);
 
     }
+    /// Menampilkan dialog kosong atau fallback jika tidak ada dialog yang tersedia.
+    /// </summary>
+    /// <param name="message">Pesan yang ditampilkan.</param>
+    /// <param name="closingText">Teks tombol untuk menutup dialog.</param>
+
     public void EmptyDialogue(string message, string closingText)
     {
         Dialogue cantTalk = new Dialogue(message, DialogueSubject.Player);
@@ -188,25 +285,42 @@ public class DialogueUIController : MonoBehaviour
         CreateOption(closingText, ev => End());
 
     }
-    string GetSubject(String other, DialogueSubject subject)
+
+    /// <summary>
+    /// Mengembalikan nama pembicara berdasarkan subjek dialog.
+    /// </summary>
+    /// <param name="other">Nama karakter lain.</param>
+    /// <param name="subject">Subjek dialog (Player atau NPC).</param>
+    /// <returns>Nama pembicara yang ditampilkan.</returns>
+
+    (string, Sprite) GetSubject(String other, DialogueSubject subject)
     {
         string name = "";
+        Sprite potrait = null;
         switch (subject)
         {
             case DialogueSubject.Player:
                 name = "You";
+                potrait = playerPotrait;
                 break;
             case DialogueSubject.Npc:
                 name = other == null ? "Unknown" : other;
+                potrait = otherPotrait;
                 break;
             default:
                 name = "Unknown";
                 break;
         }
-        return name;
+        return (name, potrait);
     }
-
-    public void Trigger(DialogueGraph dialogue, String name)
+    /// <summary>
+    /// Memulai sesi dialog baru menggunakan graph dialog dan nama karakter.
+    /// Pastikan graph berisi item dialog yang valid, dan tidak ada sesi dialog lain yang sedang berlangsung.
+    /// Jika nama karakter tidak tersedia, maka field subject akan menampilkan "Unknown".
+    /// </summary>
+    /// <param name="dialogue">Graph dialog yang akan dijalankan.</param>
+    /// <param name="name">Nama karakter lain yang menjadi lawan bicara.</param>
+    public void Trigger(DialogueGraph dialogue, String name, Sprite playerPotrait, Sprite otherPotrait)
     {
 
         dialogueIndex = 0;
@@ -232,9 +346,16 @@ public class DialogueUIController : MonoBehaviour
         Debug.Log("Dialogue is now starting");
         root.style.display = DisplayStyle.Flex;
         this.playingDialogue = dialogue;
+        this.playerPotrait = playerPotrait;
+        this.otherPotrait = otherPotrait;
         GetNextLine(false);
 
     }
+
+    /// <summary>
+    /// Menghapus semua tombol pilihan dari UI.
+    /// </summary>
+
     void RemoveOptions()
     {
         foreach (Button option in otherOptions)
@@ -243,6 +364,10 @@ public class DialogueUIController : MonoBehaviour
         }
         otherOptions.Clear();
     }
+    /// <summary>
+    /// Mengakhiri sesi dialog dan mereset UI.
+    /// </summary>
+
     public void End()
     {
 
@@ -255,6 +380,8 @@ public class DialogueUIController : MonoBehaviour
         playingDialogue = null;
         otherName = null;
         StopAllCoroutines();
+        this.playerPotrait = null;
+        this.otherPotrait = null;
         root.style.display = DisplayStyle.None;
         dialogueIndex = 0;
         dialogueContent.text = "";
