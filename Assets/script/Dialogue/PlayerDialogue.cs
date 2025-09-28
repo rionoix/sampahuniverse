@@ -1,11 +1,17 @@
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
+using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 public class PlayerDialogue : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Rigidbody rb;
     private GameEntity entity;
-    DialogueUIController dialogueUI;
+    float triggerRadius = 10.0f;
+    private DialogueUIController dialogueUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,44 +21,69 @@ public class PlayerDialogue : MonoBehaviour
         entity = gameObject.GetComponent<GameEntity>();
         dialogueUI = GameObject.Find("Dialogue").GetComponent<DialogueUIController>();
 
-    }
 
+        dialogueUI.Activate();
+
+    }
+    private HashSet<GameObject> alreadyEntered = new();
+
+    GameObject[] proximityEntity;
     // Update is called once per frame
     void Update()
     {
+        float radius = 2f;
+        float radiusSqr = radius * radius;
+        Vector3 origin = transform.position;
+        GameObject[] potentialTargets = GameObject.FindGameObjectsWithTag("Entity");
+        HashSet<GameObject> newInside = new();
+        // The collider shits itself so I have to make a makeshift proximity detector...
+        foreach (GameObject target in potentialTargets)
+        {
+            float distSqr = (target.transform.position - origin).sqrMagnitude;
+            if (distSqr > radiusSqr || alreadyEntered.Contains(target))
+            {
+                continue;
+            }
+
+            alreadyEntered.Add(target);
+
+            alreadyEntered.Add(target);
+            OnProximityEnter(target);
+
+        }
+
+        foreach (GameObject target in alreadyEntered)
+        {
+            float exitRadius = (radius + 0.5f) * (radius + 0.5f);
+            float distSqr = (target.transform.position - origin).sqrMagnitude;
+            if (distSqr <= radiusSqr)
+            {
+                newInside.Add(target);
+            }
+            else
+            {
+                OnProximityExit(target);
+                // Debug.Log("Exiting set: " + target.name);
+            }
+        }
+        alreadyEntered = newInside;
         //Debug.Log("meow");
     }
 
-    public (DialogueGraph graph, GameEntity otherEntity) GetDialogue(GameObject objCollision)
+    void OnProximityEnter(GameObject gameObject)
     {
-        GameEntity other = objCollision.GetComponent<GameEntity>();
-        if (other == null)
+        DialogueGraph graph = gameObject.GetComponent<DialogueGraph>();
+        if (graph != null)
         {
-            Debug.Log("Can't find entity");
-            return (null, null);
+            dialogueUI.Trigger(graph, gameObject.name);
         }
-        DialogueGraph graph = objCollision.GetComponent<DialogueGraph>();
-        return (graph, other);
     }
-
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnProximityExit(GameObject gameObject)
     {
-
-        var (dialogueGraph, other) = GetDialogue(collision.gameObject);
-        Debug.Log("Collided: " + other + dialogueGraph + collision.gameObject.name);
-        if (dialogueGraph != null)
+        DialogueGraph graph = gameObject.GetComponent<DialogueGraph>();
+        if (graph != null)
         {
-            Debug.Log("Dialogue starting meow!");
-            dialogueUI.Trigger(collision.gameObject.GetComponent<GameEntity>(), dialogueGraph, other.stats.entityName);
-        }
-
-
-    }
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        var (dialogueGraph, other) = GetDialogue(collision.gameObject);
-        if (dialogueGraph != null)
-        {
+            Debug.Log("mrrp mrrp meowwww");
             dialogueUI.End();
         }
     }

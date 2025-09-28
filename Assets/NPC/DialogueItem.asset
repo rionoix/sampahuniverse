@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingDialogue:
     dialogueId: hello
-    dialogue: []
+    dialogue:
+    - message: HELLO meow
+      subject: 0
     dialogueOptions: []
   dialogueSequences: []

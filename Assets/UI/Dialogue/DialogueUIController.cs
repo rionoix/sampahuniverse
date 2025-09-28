@@ -8,6 +8,7 @@ using NUnit.Framework.Constraints;
 
 public class DialogueUIController : MonoBehaviour
 {
+    // I'm going to fucking kill myself from the amount of shared mutables.
     DialogueGraph playingDialogue;
     VisualElement root;
     Label dialogueContent;
@@ -21,7 +22,7 @@ public class DialogueUIController : MonoBehaviour
     float typingSpeed = 0.05f;
     int dialogueIndex = 0;
     Button skipButton;
-    void OnEnable()
+    public void Activate()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
         root.style.display = DisplayStyle.None;
@@ -34,8 +35,7 @@ public class DialogueUIController : MonoBehaviour
         {
             Debug.Log("UIDocument root loaded successfully.");
         }
-
-        // ScrollView text = root.Q<ScrollView>("texts");
+        // Tombol-tombol yang dibutuhkan untuk UI
         dialogueContent = root.Q<Label>("dialogue-text");
         subjectSpeaking = root.Q<Label>("subject");
         exitButton = root.Q<Button>("exit-button");
@@ -44,6 +44,10 @@ public class DialogueUIController : MonoBehaviour
         optionContainer = optionTab.contentContainer;
         exitButton.clicked += End;
         skipButton.clicked += HandleDialogueClick;
+    }
+    void OnEnable()
+    {
+        Activate();
 
     }
     void HandleDialogueClick()
@@ -78,17 +82,8 @@ public class DialogueUIController : MonoBehaviour
         {
             return;
         }
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            End();
-            return;
-        }
-        if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
-        {
-            // List<Dialogue> current = playingDialogue.ReturnDialogue();
-            HandleDialogueClick();
 
-        }
+
     }
     void GetNextLine(bool skipped)
     {
@@ -211,8 +206,9 @@ public class DialogueUIController : MonoBehaviour
         return name;
     }
 
-    public void Trigger(GameEntity other, DialogueGraph dialogue, String name)
+    public void Trigger(DialogueGraph dialogue, String name)
     {
+
         dialogueIndex = 0;
         Debug.Log("Starting dialogue...");
         this.otherName = name;
@@ -221,7 +217,7 @@ public class DialogueUIController : MonoBehaviour
             EmptyDialogue("I can't talk to them!", "Return");
             return;
         }
-        this.playingDialogue = dialogue;
+
         if (dialogue.dialogueFrame == null)
         {
             EmptyDialogue("There is nothing to talk about!", "Return");
@@ -229,12 +225,13 @@ public class DialogueUIController : MonoBehaviour
         }
         if (playingDialogue != null)
         {
-            playingDialogue.End();
+            Debug.Log("meowing so hard meowwww :3");
+            return;
+
         }
-
-
+        Debug.Log("Dialogue is now starting");
         root.style.display = DisplayStyle.Flex;
-        playingDialogue.Trigger();
+        this.playingDialogue = dialogue;
         GetNextLine(false);
 
     }
@@ -248,10 +245,12 @@ public class DialogueUIController : MonoBehaviour
     }
     public void End()
     {
+
         if (playingDialogue != null)
         {
             playingDialogue.End();
         }
+        Debug.Log("Dialogue ended!");
         RemoveOptions();
         playingDialogue = null;
         otherName = null;
